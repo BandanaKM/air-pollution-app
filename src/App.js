@@ -8,10 +8,6 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state = {inputValue: 'New York, New York'};
-
-    // this.handleSearch = this.handleSearch.bind(this);
-    // this.handleInputChange = this.handleInputChange.bind(this);
-    // bind function, will always run in this context.
   }
 
   async handleSearch (event) {
@@ -25,7 +21,6 @@ class App extends Component {
 
     this.setState({
       ...cityWeather,
-      // airQualityGrade: {grade: cityWeather.airQualityGrade.grade, color: cityWeather.airQualityGrade.color}
     })
   }
 
@@ -37,7 +32,17 @@ class App extends Component {
 
   render() {
 
-    const { airQuality, airQualityGrade, airQualityColor, temperature, weatherIcon, humidity, windSpeed, windDirection } = this.state;
+    const {
+      airQuality,
+      airQualityGrade,
+      airQualityColor,
+      temperature,
+      weatherIcon,
+      humidity,
+      windSpeed,
+      windDirection,
+      timestamp
+    } = this.state;
 
     return (
       <div className="App">
@@ -49,14 +54,17 @@ class App extends Component {
           </form>
         </header>
         <div className="main">
-          <City airQuality={airQuality} airQualityGrade={airQualityGrade} airQualityColor={airQualityColor} temperature={temperature} weatherIcon={weatherIcon} humidity={humidity} windSpeed={windSpeed} windDirection={windDirection} />
-          <p>{this.state.airQuality}</p>
-          <p>{this.state.temperature}</p>
-          <p>{this.state.weatherIcon}</p>
-          <p>{this.state.humidity}</p>
-          <p>{this.state.windSpeed}</p>
-          <p>{this.state.windDirection}</p>
-          <p>{this.state.airQualityGrade}</p>
+          <City
+            airQuality={airQuality}
+            airQualityGrade={airQualityGrade}
+            airQualityColor={airQualityColor}
+            temperature={temperature}
+            weatherIcon={weatherIcon}
+            humidity={humidity}
+            windSpeed={windSpeed}
+            windDirection={windDirection}
+            timestamp={timestamp}
+          />
         </div>
       </div>
     );

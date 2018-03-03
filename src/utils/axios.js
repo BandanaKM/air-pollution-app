@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment';
 
 export async function getCityWeather (city, state) {
   const axiosResponse = await axios.get(`http://api.airvisual.com/v2/city?city=${city}&state=${state}&country=USA&key=JQSzBFurGKXDZE3yy
@@ -28,6 +29,7 @@ export async function getCityWeather (city, state) {
     windSpeed: response.data.current.weather.ws,
     windDirection: response.data.current.weather.wd,
     airQualityGrade,
-    airQualityColor
+    airQualityColor,
+    timestamp: moment(response.data.current.weather.ts).format('h:MMa')
   }
 }

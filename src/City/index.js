@@ -3,10 +3,21 @@ import CityAirQuality from './CityAirQuality';
 import CityWeather from './CityWeather';
 import PropTypes from 'prop-types';
 
-const City = ({airQuality, airQualityGrade, airQualityColor, temperature, weatherIcon, humidity, windSpeed, windDirection}) =>
+const City = ({airQuality, airQualityGrade, airQualityColor, temperature, weatherIcon, humidity, windSpeed, windDirection, timestamp}) =>
   <div>
-    <CityAirQuality airQuality={airQuality} airQualityGrade={airQualityGrade} airQualityColor={airQualityColor} />
-    <CityWeather temperature={temperature} weatherIcon={weatherIcon} humidity={humidity} windSpeed={windSpeed} windDirection={windDirection} />
+    <CityAirQuality
+      airQuality={airQuality}
+      airQualityGrade={airQualityGrade}
+      airQualityColor={airQualityColor}
+    />
+    <CityWeather
+      temperature={temperature}
+      weatherIcon={weatherIcon}
+      humidity={humidity}
+      windSpeed={windSpeed}
+      windDirection={windDirection}
+      timestamp={timestamp}
+    />
   </div>
 
 City.propTypes = {
@@ -18,6 +29,7 @@ City.propTypes = {
   humidity: PropTypes.number,
   windSpeed: PropTypes.number,
   windDirection: PropTypes.number,
+  timestamp: PropTypes.string
 }
 
 export default City;
