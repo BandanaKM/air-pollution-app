@@ -1,56 +1,70 @@
 import React, { Component } from 'react';
 import './App.css';
 import { getCityWeather } from './utils/axios';
+import City from './City';
 
 class App extends Component {
 
   constructor(props){
     super(props)
-    this.state = {inputValue: 'Los Angeles, California'};
-
-    this.handleSearch = this.handleSearch.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
+    this.state = {inputValue: 'New York, New York'};
   }
 
-  async handleSearch(event) {
+  async handleSearch (event) {
     event.preventDefault();
     const inputValue = this.state.inputValue;
-    const inputValueArray = inputValue.split(',');
-    const city = inputValueArray[0];
-    const state = inputValueArray[1];
+    const inputArray = inputValue.split(',');
+    const city = inputArray[0];
+    const state = inputArray[1];
 
     const cityWeather = await getCityWeather(city, state);
 
     this.setState({
       ...cityWeather,
-      airQualityGrade: cityWeather.airQualityGrade.grade
     })
   }
 
-  handleInputChange(event){
+  handleInputChange (event) {
     this.setState({
       inputValue: event.target.value
     })
   }
 
   render() {
+
+    const {
+      airQuality,
+      airQualityGrade,
+      airQualityColor,
+      temperature,
+      weatherIcon,
+      humidity,
+      windSpeed,
+      windDirection,
+      timestamp
+    } = this.state;
+
     return (
       <div className="App">
         <header>
           <h1>AirLite</h1>
-          <form>
-              <input type="text" onChange={this.handleInputChange} value={this.state.inputValue} placeholder="Enter a City" />
-              <button onClick={this.handleSearch}>Submit</button>
+          <form onSubmit={(event) => this.handleSearch(event)}>
+              <input type="text" onChange={(event) => this.handleInputChange(event)} value={this.state.inputValue} placeholder="Enter a City" />
+              <button onClick={(event) => this.handleSearch(event)}>Submit</button>
           </form>
         </header>
         <div className="main">
-          <p>{this.state.airQuality}</p>
-          <p>{this.state.temperature}</p>
-          <p>{this.state.weatherIcon}</p>
-          <p>{this.state.humidity}</p>
-          <p>{this.state.windSpeed}</p>
-          <p>{this.state.windDirection}</p>
-          <p>{this.state.airQualityGrade}</p>
+          <City
+            airQuality={airQuality}
+            airQualityGrade={airQualityGrade}
+            airQualityColor={airQualityColor}
+            temperature={temperature}
+            weatherIcon={weatherIcon}
+            humidity={humidity}
+            windSpeed={windSpeed}
+            windDirection={windDirection}
+            timestamp={timestamp}
+          />
         </div>
       </div>
     );

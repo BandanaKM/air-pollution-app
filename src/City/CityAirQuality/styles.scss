@@ -1,0 +1,23 @@
+.air-pollution__city-air-quality {
+  display: flex;
+  align-content: space-between;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  width: 100%;
+  padding: 50px 0;
+  border-radius: 5px;
+
+  &.green {
+    background-color: #6ba368;
+  }
+  &.orange {
+    background-color: #f17300;
+  }
+  &.red {
+    background-color: #f76F8e;
+  }
+  &.yellow {
+    background-color: #e4b363;
+  }
+}
