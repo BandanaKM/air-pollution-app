@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { getCityWeather } from './utils/axios';
 import City from './City';
+import CityForecast from './CityForecast';
 
 class App extends Component {
 
@@ -65,6 +66,7 @@ class App extends Component {
             windDirection={windDirection}
             timestamp={timestamp}
           />
+          <CityForecast />
         </div>
       </div>
     );

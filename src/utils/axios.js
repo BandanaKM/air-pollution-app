@@ -33,3 +33,48 @@ export async function getCityWeather (city, state) {
     timestamp: moment(response.data.current.weather.ts).format('h:MMa')
   }
 }
+
+const REFERENCE = moment();
+const TODAY = REFERENCE.clone().startOf('day');
+const TOMORROW = REFERENCE.clone().add(1, 'days').startOf('day');
+
+function isToday(momentDate) {
+    return momentDate.isSame(TODAY, 'd');
+}
+function isTomorrow(momentDate) {
+    return momentDate.isSame(TOMORROW, 'd');
+}
+
+export async function getForecast (city) {
+  const axiosResponse = await axios.get(`http://api.openweathermap.org/data/2.5/forecast?q=${city},US&appid=3227d8e4cb9a96c65c3375e1941aeee9`);
+  const response = axiosResponse.data;
+
+  const today = [];
+  const tomorrow = [];
+  const dayAfter = [];
+
+  response.list.forEach((forecast) => {
+    const time = moment(forecast.dt_txt);
+    const json = {
+      icon: forecast.weather.icon,
+      temperature: Number.parseInt(forecast.main.temp, 10),
+      windDirection: Number.parseInt(forecast.wind.deg, 10),
+      windSpeed: Number.parseInt(forecast.wind.speed, 10),
+      time: time.format('h:MMa')
+    }
+
+    if (isToday(time)) {
+      today.push(json);
+    } else if (isTomorrow(time)) {
+      tomorrow.push(json);
+    } else {
+      dayAfter.push(json);
+    }
+  })
+
+  return {
+    todaysForecast: {day: today.day(), forecast: today},
+    tomorrowsForecast: {day: today.day(1), forecast: tomorrow},
+    dayAftersForecast: {day: today.day(2), forecast: dayAfter}
+  }
+}
