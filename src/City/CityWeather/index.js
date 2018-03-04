@@ -2,25 +2,24 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import block from 'bem-cn';
 import './styles.css';
+const FaAngleUp = require('react-icons/lib/fa/angle-up');
 
 const panel = block('air-pollution');
-const container = panel('city-weather');
-const rotation = direction => 'rotate('+direction+'deg)';
 
 const CityWeather = ({temperature, weatherIcon, humidity, windSpeed, windDirection, timestamp}) =>
   <div>
-    <div className={container()}>
+    <div className={panel('city-weather')()}>
       <div>
         <span>{temperature}</span>
         <img src={`https://www.airvisual.com/images/${weatherIcon}.png`} height="20px" width="20px"/>
       </div>
       <div>{humidity}</div>
       <div>
-        <span style={{transform: `rotate(${windDirection}deg)`}}>l</span>
-        <span>{windSpeed}</span>
+        <div className={panel('wind-arrow-display')()} style={{transform: `rotate(${windDirection}deg)`}}><FaAngleUp /></div>
+        <span className={panel('wind-speed-display')()}>{windSpeed}</span>
       </div>
     </div>
-    <div>
+    <div className={panel('timestamp')()}>
       {timestamp}
     </div>
   </div>
