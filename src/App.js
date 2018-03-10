@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { getCityWeather } from './utils/axios';
-import { getForecast } from './utils/axios';
+import { getCityWeather, getForecast } from './utils/axios';
 import City from './City';
 import CityForecast from './CityForecast';
 
@@ -26,7 +25,9 @@ class App extends Component {
       ...cityWeather,
       ...cityForecast
     })
-    console.log(this.state);
+    const previousSearched = JSON.parse(localStorage.getItem('airLiteSearch')) || [];
+    previousSearched.push(inputValue);
+    localStorage.setItem('airLiteSearch', JSON.stringify(previousSearched));
   }
 
   handleInputChange (event) {
@@ -46,7 +47,10 @@ class App extends Component {
       humidity,
       windSpeed,
       windDirection,
-      timestamp
+      timestamp,
+      todaysForecast,
+      tomorrowsForecast,
+      dayAftersForecast
     } = this.state;
 
     return (
@@ -59,20 +63,24 @@ class App extends Component {
           </form>
         </header>
         <div className="main">
-          <City
-            airQuality={airQuality}
-            airQualityGrade={airQualityGrade}
-            airQualityColor={airQualityColor}
-            temperature={temperature}
-            weatherIcon={weatherIcon}
-            humidity={humidity}
-            windSpeed={windSpeed}
-            windDirection={windDirection}
-            timestamp={timestamp}
-          />
-          <CityForecast
-
-          />
+          {temperature &&
+            <City
+              airQuality={airQuality}
+              airQualityGrade={airQualityGrade}
+              airQualityColor={airQualityColor}
+              temperature={temperature}
+              weatherIcon={weatherIcon}
+              humidity={humidity}
+              windSpeed={windSpeed}
+              windDirection={windDirection}
+              timestamp={timestamp}
+            />}
+          {(todaysForecast || tomorrowsForecast || dayAftersForecast) &&
+            <CityForecast
+              todaysForecast={todaysForecast}
+              tomorrowsForecast={tomorrowsForecast}
+              dayAftersForecast={dayAftersForecast}
+            />}
         </div>
       </div>
     );
