@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { getCityWeather } from './utils/axios';
+import { getForecast } from './utils/axios';
 import City from './City';
 import CityForecast from './CityForecast';
 
@@ -19,10 +20,13 @@ class App extends Component {
     const state = inputArray[1];
 
     const cityWeather = await getCityWeather(city, state);
+    const cityForecast = await getForecast(city);
 
     this.setState({
       ...cityWeather,
+      ...cityForecast
     })
+    console.log(this.state);
   }
 
   handleInputChange (event) {
@@ -66,7 +70,9 @@ class App extends Component {
             windDirection={windDirection}
             timestamp={timestamp}
           />
-          <CityForecast />
+          <CityForecast
+
+          />
         </div>
       </div>
     );
