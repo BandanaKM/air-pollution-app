@@ -1,0 +1,4 @@
+.air-pollution__city-hour-forecast {
+  display: flex;
+  flex-direction: column;
+  color: red; }

@@ -1,6 +1,8 @@
 import axios from 'axios';
 import moment from 'moment';
 
+const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
 export async function getCityWeather (city, state) {
   const axiosResponse = await axios.get(`http://api.airvisual.com/v2/city?city=${city}&state=${state}&country=USA&key=JQSzBFurGKXDZE3yy
 `)
@@ -37,12 +39,16 @@ export async function getCityWeather (city, state) {
 const REFERENCE = moment();
 const TODAY = REFERENCE.clone().startOf('day');
 const TOMORROW = REFERENCE.clone().add(1, 'days').startOf('day');
+const DAYAFTER = REFERENCE.clone().add(2, 'days').startOf('day');
 
 function isToday(momentDate) {
     return momentDate.isSame(TODAY, 'd');
 }
 function isTomorrow(momentDate) {
     return momentDate.isSame(TOMORROW, 'd');
+}
+function isDayAfter(momentDate) {
+    return momentDate.isSame(DAYAFTER, 'd');
 }
 
 export async function getForecast (city) {
@@ -56,25 +62,25 @@ export async function getForecast (city) {
   response.list.forEach((forecast) => {
     const time = moment(forecast.dt_txt);
     const json = {
-      icon: forecast.weather.icon,
+      icon: (forecast.weather[0].icon).replace('04n', '04d'),
       temperature: Number.parseInt(forecast.main.temp, 10),
       windDirection: Number.parseInt(forecast.wind.deg, 10),
       windSpeed: Number.parseInt(forecast.wind.speed, 10),
-      time: time.format('h:MMa')
+      time: time.format('h:[00]a')
     }
 
     if (isToday(time)) {
       today.push(json);
     } else if (isTomorrow(time)) {
       tomorrow.push(json);
-    } else {
+    } else if (isDayAfter(time)) {
       dayAfter.push(json);
     }
   })
 
   return {
-    todaysForecast: {day: moment().day(), forecast: today},
-    tomorrowsForecast: {day: moment().day(1), forecast: tomorrow},
-    dayAftersForecast: {day: moment().day(2), forecast: dayAfter}
+    todaysForecast: {day: weekdays[moment().day()], forecast: today},
+    tomorrowsForecast: {day: moment().day(0).format('dddd'), forecast: tomorrow},
+    dayAftersForecast: {day: moment().day(1).format('dddd'), forecast: dayAfter}
   }
 }
