@@ -73,8 +73,8 @@ export async function getForecast (city) {
   })
 
   return {
-    todaysForecast: {day: today.day(), forecast: today},
-    tomorrowsForecast: {day: today.day(1), forecast: tomorrow},
-    dayAftersForecast: {day: today.day(2), forecast: dayAfter}
+    todaysForecast: {day: moment().day(), forecast: today},
+    tomorrowsForecast: {day: moment().day(1), forecast: tomorrow},
+    dayAftersForecast: {day: moment().day(2), forecast: dayAfter}
   }
 }
