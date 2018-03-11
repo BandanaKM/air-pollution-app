@@ -84,3 +84,46 @@ export async function getForecast (city) {
     dayAftersForecast: {day: moment().day(1).format('dddd'), forecast: dayAfter}
   }
 }
+
+export async function getCityForecast (city, state) {
+  const axiosResponse = await axios.get(`http://api.apixu.com/v1/forecast.json?key=5601e348c2eb4b03b89204103181103&q=${city}&days=3
+`)
+  const response = axiosResponse.data;
+
+  const todayResponse = response.forecast.forecastday[0];
+  const tomorrowResponse = response.forecast.forecastday[1];
+  const dayAfterResponse = response.forecast.forecastday[2];
+
+  const today = {
+    day: moment().format('ddd'),
+    averageTemperature: todayResponse.day.avgtemp_f,
+    weatherIcon: todayResponse.day.condition.icon
+  }
+
+  const tomorrow = {
+    day: moment().day(0).format('ddd'),
+    averageTemperature: tomorrowResponse.day.avgtemp_f,
+    weatherIcon: tomorrowResponse.day.condition.icon
+  }
+
+  const dayAfter = {
+    day: moment().day(1).format('ddd'),
+    averageTemperature: dayAfterResponse.day.avgtemp_f,
+    weatherIcon: dayAfterResponse.day.condition.icon,
+  }
+
+  const cityWeather = await getCityWeather(city, state)
+
+  return {
+    weather: {
+      ...cityWeather
+    },
+    forecast: {
+      today,
+      tomorrow,
+      dayAfter,
+    },
+    localTime: moment(response.location.localtime, 'YYYY-MM-DD HH:mm').format('h:mma')
+  }
+
+}

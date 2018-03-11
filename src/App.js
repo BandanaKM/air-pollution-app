@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import './App.css';
-import { getCityWeather, getForecast } from './utils/axios';
+import { getCityWeather, getForecast, getCityForecast } from './utils/axios';
 import City from './City';
 import CityForecast from './CityForecast';
+import SearchedCities from './SearchedCities';
 
 class App extends Component {
 
   constructor(props){
     super(props)
-    this.state = {inputValue: 'New York, New York'};
+    this.state = {
+      inputValue: 'New York, New York',
+      searched: []
+    };
   }
 
   async handleSearch (event) {
@@ -25,8 +29,20 @@ class App extends Component {
       ...cityWeather,
       ...cityForecast
     })
+
     const previousSearched = JSON.parse(localStorage.getItem('airLiteSearch')) || [];
     previousSearched.push(inputValue);
+    const previousSearchedForecast = previousSearched.map((value) => {
+      const inputValue = value;
+      const inputArray = inputValue.split(',');
+      const city = inputArray[0];
+      const state = inputArray[1];
+      const searchedCityForecast = await getCityForecast(city, state);
+      return searchedCityForecast;
+    })
+    this.setState({
+      searched: previousSearchedForecast
+    })
     localStorage.setItem('airLiteSearch', JSON.stringify(previousSearched));
   }
 
@@ -81,6 +97,9 @@ class App extends Component {
               tomorrowsForecast={tomorrowsForecast}
               dayAftersForecast={dayAftersForecast}
             />}
+            <SearchedCities
+              searched={this.state.searched}
+            />
         </div>
       </div>
     );
