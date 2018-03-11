@@ -19,15 +19,3 @@ CityHourForecast.propTypes = {
 }
 
 export default CityHourForecast;
-
-/*
-
-<div className={panel('city-hour-forecast')()}>
-  <div>{todaysForecast.forecast[0].temperature}</div>
-  <div>Weather</div>
-  <div>Temperature</div>
-  <div>WindDirection</div>
-  <div>WindSpeed</div>
-</div>
-
-*/

@@ -35,16 +35,3 @@ const CityForecast = ({todaysForecast, tomorrowsForecast, dayAftersForecast}) =>
   }
 
 export default CityForecast;
-
-/*
-
-<TabList>
-  <Tab>{todaysForecast.day}</Tab>
-  <Tab>{tomorrowsForecast.day}</Tab>
-  <Tab>{dayAftersForecast.day}</Tab>
-</TabList>
-
-potential issues:
- - the formatting for the day is different. could we use moment to format the day here?
- - it seems to skip over sunday, but we can look at this later
-*/
