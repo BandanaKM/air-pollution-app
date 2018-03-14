@@ -45,6 +45,5 @@ export default CityForecast;
 </TabList>
 
 potential issues:
- - the formatting for the day is different. could we use moment to format the day here?
- - it seems to skip over sunday, but we can look at this later
+ - the formatting for the day is different. could use moment to format the day here?
 */
